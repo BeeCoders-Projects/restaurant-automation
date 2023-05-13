@@ -1,4 +1,4 @@
-package com.beecoders.ras.auth.model.entity;
+package com.beecoders.ras.model.auth.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

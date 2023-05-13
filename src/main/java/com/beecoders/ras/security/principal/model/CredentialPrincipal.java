@@ -1,6 +1,6 @@
 package com.beecoders.ras.security.principal.model;
 
-import com.beecoders.ras.auth.model.entity.Credential;
+import com.beecoders.ras.model.auth.entity.Credential;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

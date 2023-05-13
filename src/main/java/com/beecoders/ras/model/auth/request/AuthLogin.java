@@ -1,4 +1,4 @@
-package com.beecoders.ras.auth.model.request;
+package com.beecoders.ras.model.auth.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

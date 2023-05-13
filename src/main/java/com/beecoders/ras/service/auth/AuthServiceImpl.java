@@ -1,9 +1,8 @@
-package com.beecoders.ras.auth.service.impl;
+package com.beecoders.ras.service.auth;
 
-import com.beecoders.ras.auth.model.entity.Credential;
-import com.beecoders.ras.auth.model.request.AuthLogin;
-import com.beecoders.ras.auth.repository.CredentialRepository;
-import com.beecoders.ras.auth.service.AuthService;
+import com.beecoders.ras.model.auth.entity.Credential;
+import com.beecoders.ras.model.auth.request.AuthLogin;
+import com.beecoders.ras.repository.auth.CredentialRepository;
 import com.beecoders.ras.security.jwt.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

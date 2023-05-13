@@ -2,7 +2,7 @@ package com.beecoders.ras.security.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.beecoders.ras.auth.model.entity.Credential;
+import com.beecoders.ras.model.auth.entity.Credential;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
