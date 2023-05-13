@@ -10,12 +10,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -33,9 +36,15 @@ public class AuthController {
     @ApiResponses({ @ApiResponse(responseCode = "200",  headers={
             @Header(name="Access token", description="Jwt-token",
                     schema = @Schema(implementation = String.class))},
-            content = { @Content(mediaType = "application/json") })})
+            content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Incorrect data",
+                    content = { @Content(schema = @Schema(implementation = HashMap.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Incorrect credentials",
+                    content = { @Content(schema = @Schema(implementation = HashMap.class),
+                            mediaType = "application/json") })})
     @PostMapping("/login")
-    public HttpHeaders login(@RequestBody AuthLogin authLogin) {
+    public HttpHeaders login(@Valid @RequestBody AuthLogin authLogin) {
         String jwtToken = authService.login(authLogin);
         HttpHeaders headers = new HttpHeaders();
 
