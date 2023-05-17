@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.auth.request;
+package com.beecoders.ras.model.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

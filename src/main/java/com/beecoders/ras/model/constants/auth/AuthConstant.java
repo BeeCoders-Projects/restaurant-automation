@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.auth.constants;
+package com.beecoders.ras.model.constants.auth;
 
 public class AuthConstant {
     public static final String ACCOUNT_NOT_FOUND_ERROR_MESSAGE = "Account with username [%s] does not exist";
