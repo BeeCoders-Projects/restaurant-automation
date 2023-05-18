@@ -1,4 +1,4 @@
-package com.beecoders.ras.security.config;
+package com.beecoders.ras.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

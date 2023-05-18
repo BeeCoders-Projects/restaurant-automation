@@ -52,9 +52,8 @@ public class Dish {
     @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    private Set<Specific> specifics;
+    @Column
+    private String specifics;
 
     @ManyToOne
     @JoinColumn(name = "fk_category_id")
