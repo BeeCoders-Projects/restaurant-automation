@@ -7,9 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class DishResponseMapper extends AbstractConverter<Dish, DishResponse> {
@@ -27,8 +27,8 @@ public class DishResponseMapper extends AbstractConverter<Dish, DishResponse> {
                 .build();
     }
 
-    private Set<Specific> convertSpecifics(String specifics){
-        Set<Specific> specificSet = new HashSet<>();
+    private List<Specific> convertSpecifics(String specifics){
+        List<Specific> specificSet = new ArrayList<>();
         if(!StringUtils.isBlank(specifics)){
             Arrays.stream(specifics.trim().split(",")).forEach(s -> {
                 try{

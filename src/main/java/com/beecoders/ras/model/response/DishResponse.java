@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -27,7 +27,10 @@ public class DishResponse {
     private String icon;
     private int weight;
     private Timestamp createdAt;
-    private Set<Specific> specifics;
+    private List<Specific> specifics;
     private Category category;
 
+    public List<String> getStringSpecifics(){
+        return specifics.stream().map(Specific::getSpecificName).toList();
+    }
 }

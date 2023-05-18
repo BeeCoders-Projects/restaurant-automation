@@ -7,7 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Specific {
     VEGETARIAN(1, "Vegetarian"),
-    SPICY(2, "Spicy");
+    VEGAN(2, "Vegan"),
+    SPICY(3, "Spicy"),
+    HOT_SPICY(4, "Hot spicy"),
+    LACTOSE(5, "Lactose"),
+    GLUTEN(6, "Gluten");
 
     private final int specificValue;
     private final String specificName;
