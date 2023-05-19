@@ -5,8 +5,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.beecoders.ras.model.entity.auth.Credential;
+
+import com.beecoders.ras.repository.RestaurantTableRepository;
+import lombok.RequiredArgsConstructor;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,14 +21,22 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+
+import java.util.Objects;
+
 import java.util.List;
 
+
+import static com.beecoders.ras.model.constants.auth.AuthConstant.TABLE_ROLE;
 import static com.beecoders.ras.security.jwt.constant.JwtTokenConstant.*;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
+
+    private final RestaurantTableRepository restaurantTableRepository;
 
     public String generateJwtToken(Credential credential) {
         return JWT.create()
@@ -31,9 +44,20 @@ public class JwtTokenProvider {
                 .withAudience()
                 .withIssuedAt(new Date())
                 .withSubject(credential.getUsername())
+                .withClaim(NAME_CLAIM, getName(credential))
                 .withClaim(ROLE_CLAIM, credential.getRole().getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
+    }
+
+
+    private String getName(Credential credential) {
+        return (Objects.equals(credential.getRole().getName(), TABLE_ROLE))
+                ? getTableName(credential) : credential.getUsername();
+    }
+
+    private String getTableName(Credential credential) {
+        return restaurantTableRepository.findByCredential(credential).get().getName();
     }
 
     public Authentication getAuthentication(String username, GrantedAuthority authority, HttpServletRequest request) {
@@ -76,5 +100,6 @@ public class JwtTokenProvider {
             throw new JWTVerificationException(TOKEN_NOT_VERIFIED_MESSAGE);
         }
         return verifier;
+
     }
 }
