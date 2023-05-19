@@ -58,6 +58,7 @@ public class JwtTokenProvider {
 
     private String getTableName(Credential credential) {
         return restaurantTableRepository.findByCredential(credential).get().getName();
+    }
 
     public Authentication getAuthentication(String username, GrantedAuthority authority, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authenticationToken
