@@ -31,7 +31,4 @@ public class Credential {
     @ManyToOne
     @JoinColumn(name = "fk_role_id")
     private Role role;
-
-    @OneToOne(mappedBy = "credential")
-    private RestaurantTable table;
 }
