@@ -1,13 +1,7 @@
 package com.beecoders.ras.model.entity.auth;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.beecoders.ras.model.entity.RestaurantTable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -37,4 +31,7 @@ public class Credential {
     @ManyToOne
     @JoinColumn(name = "fk_role_id")
     private Role role;
+
+    @OneToOne(mappedBy = "credential")
+    private RestaurantTable table;
 }
