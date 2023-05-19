@@ -1,0 +1,26 @@
+name: Docker Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: docker build -t ras-image .
+
+      - name: Stop Docker Containers
+        run: docker stop ras-app || true
+
+      - name: Remove Existing Docker Containers
+        run: docker rm ras-app || true
+
+      - name: Run Docker Container
+        run: docker run -d --name ras-app -p 8080:8080 ras-image
