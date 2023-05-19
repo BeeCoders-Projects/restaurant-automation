@@ -14,13 +14,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker Image
-        run: docker build -t ras-image .
+        run: sudo docker build -t ras-image .
 
       - name: Stop Docker Containers
-        run: docker stop ras-app || true
+        run: sudo docker stop ras-app || true
 
       - name: Remove Existing Docker Containers
-        run: docker rm ras-app || true
+        run: sudo docker rm ras-app || true
 
       - name: Run Docker Container
-        run: docker run -d --name ras-app -p 8080:8080 ras-image
+        run: sudo docker run -d --name ras-app -p 8080:8080 ras-image
