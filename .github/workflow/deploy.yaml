@@ -23,4 +23,4 @@ jobs:
         run: sudo docker rm ras-app || true
 
       - name: Run Docker Container
-        run: sudo docker run -d --name ras-app -p 8080:8080 ras-image
+        run: sudo docker run -d -p 8080:8080 -e DATASOURCE_URL=${secrets.DATASOURCE_URL} -e DATASOURCE_USER=${secrets.DATASOURCE_USER} -e DATASOURCE_PASSWORD=${secrets.DATASOURCE_PASSWORD} --name ras-app ras-image
