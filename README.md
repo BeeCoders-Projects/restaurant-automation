@@ -24,8 +24,17 @@ On the part of the administrator, the order automation system allows him to moni
 - Create a new database in MySQL and import the SQL file located in the db folder.
 - Update the application.properties file located in the src/main/resources folder with your MySQL database information.
 - Open a terminal or command prompt and navigate to the project's root directory.
-- Run the command mvn clean package to build the project and create an executable jar file.
-- Run the command java -jar target/ras.jar to start the application.
+- Run the command `mvn clean package` to build the project and create an executable jar file.
+- Run the command `java -jar target/ras.jar` to start the application.
+
+# Docker setup:
+
+- Clone the repository to your local machine.
+- Create `.env` file and add next variables `DATASOURCE_URL, DATASOURCE_USER, DATASOURCE_PASSWORD`
+- Open a terminal or command prompt and navigate to the project's root directory.
+- Run the command `docker build -t ras-image .` to build the project image.
+- Run the command `docker run -d -p 8080:8080 --env-file .env ras-image` to start the docker container.
+
 
 # Usage:
 

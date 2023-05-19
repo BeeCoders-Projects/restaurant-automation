@@ -1,0 +1,26 @@
+name: Docker Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: sudo docker build -t ras-image .
+
+      - name: Stop Docker Containers
+        run: sudo docker stop ras-app || true
+
+      - name: Remove Existing Docker Containers
+        run: sudo docker rm ras-app || true
+
+      - name: Run Docker Container
+        run: sudo docker run -d -p 8080:8080 -e DATASOURCE_URL=${secrets.DATASOURCE_URL} -e DATASOURCE_USER=${secrets.DATASOURCE_USER} -e DATASOURCE_PASSWORD=${secrets.DATASOURCE_PASSWORD} --name ras-app ras-image
