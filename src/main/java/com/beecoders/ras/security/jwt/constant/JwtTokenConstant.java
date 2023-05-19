@@ -8,5 +8,4 @@ public class JwtTokenConstant {
     public static final String TOKEN_NOT_VERIFIED_MESSAGE = "The token cannot be verified";
     public static final String ROLE_CLAIM = "role";
     public static final String NAME_CLAIM = "name";
-    public static final String ADMIN_NAME = "Admin";
 }
