@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Objects;
 
+import static com.beecoders.ras.model.constants.auth.AuthConstant.TABLE_ROLE;
 import static com.beecoders.ras.security.jwt.constant.JwtTokenConstant.*;
 
 @Component
@@ -21,8 +23,14 @@ public class JwtTokenProvider {
                 .withAudience()
                 .withIssuedAt(new Date())
                 .withSubject(credential.getUsername())
+                .withClaim(NAME_CLAIM, getName(credential))
                 .withClaim(ROLE_CLAIM, credential.getRole().getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
+    }
+
+    private String getName(Credential credential) {
+        return (Objects.equals(credential.getRole().getName(), TABLE_ROLE))
+                ? credential.getTable().getName() : ADMIN_NAME;
     }
 }
