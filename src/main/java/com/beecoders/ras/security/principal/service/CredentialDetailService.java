@@ -1,6 +1,6 @@
 package com.beecoders.ras.security.principal.service;
 
-import com.beecoders.ras.model.auth.entity.Credential;
+import com.beecoders.ras.model.entity.auth.Credential;
 import com.beecoders.ras.repository.auth.CredentialRepository;
 import com.beecoders.ras.security.principal.model.CredentialPrincipal;
 import lombok.RequiredArgsConstructor;

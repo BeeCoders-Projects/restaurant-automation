@@ -1,4 +1,4 @@
-package com.beecoders.ras.security.config;
+package com.beecoders.ras.config.security;
 
 import com.beecoders.ras.security.entrypoint.SecurityAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;

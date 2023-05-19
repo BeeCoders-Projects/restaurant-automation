@@ -1,7 +1,7 @@
 package com.beecoders.ras.service.auth;
 
-import com.beecoders.ras.model.auth.entity.Credential;
-import com.beecoders.ras.model.auth.request.AuthLogin;
+import com.beecoders.ras.model.entity.auth.Credential;
+import com.beecoders.ras.model.request.auth.AuthLogin;
 import com.beecoders.ras.repository.auth.CredentialRepository;
 import com.beecoders.ras.security.jwt.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.beecoders.ras.model.auth.constants.AuthConstant.INCORRECT_LOGIN_ERROR_MESSAGE;
-import static com.beecoders.ras.model.auth.constants.AuthConstant.ACCOUNT_NOT_FOUND_ERROR_MESSAGE;
+import static com.beecoders.ras.model.constants.auth.AuthConstant.INCORRECT_LOGIN_ERROR_MESSAGE;
+import static com.beecoders.ras.model.constants.auth.AuthConstant.ACCOUNT_NOT_FOUND_ERROR_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
