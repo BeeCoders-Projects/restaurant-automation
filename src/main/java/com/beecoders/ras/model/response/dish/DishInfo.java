@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class DishInfo {
     private Long id;
-    private String image;
+    private String icon;
     private String name;
     private Double price;
     private int weight;
