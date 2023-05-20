@@ -3,6 +3,7 @@ package com.beecoders.ras.controller.dish;
 import com.beecoders.ras.model.response.dish.DishInfo;
 import com.beecoders.ras.service.dish.DishService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,9 +14,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -47,5 +48,26 @@ public class DishController {
     @GetMapping
     public List<DishInfo> retrieveDishMenu() {
         return dishService.retrieveDishMenu();
+    }
+
+
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Upload icon of dish",
+            description = "I want to upload icon of dish.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Uploaded image successfully"),
+            @ApiResponse(responseCode = "400", description = "Incorrect image file",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                    mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @PostMapping("/image/{id}/upload")
+    @ResponseStatus(HttpStatus.OK)
+    public void uploadImageToDish(@PathVariable Long id,
+                            @Parameter(required = true, description = "Image file")
+                            @RequestParam MultipartFile image){
+        dishService.uploadImage(id, image);
     }
 }
