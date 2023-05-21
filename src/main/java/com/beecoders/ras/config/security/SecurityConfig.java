@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import static com.beecoders.ras.security.jwt.constant.JwtTokenConstant.JWT_ACCESS_TOKEN;
+import static com.beecoders.ras.security.jwt.constant.JwtTokenConstant.AUTHORIZATION_HEADER;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -36,7 +36,7 @@ public class SecurityConfig {
                             .applyPermitDefaultValues();
                     corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.addExposedHeader("Location");
-                    corsConfiguration.addExposedHeader(JWT_ACCESS_TOKEN);
+                    corsConfiguration.addExposedHeader(AUTHORIZATION_HEADER);
                     corsConfiguration.addAllowedMethod(PATCH);
                     corsConfiguration.addAllowedMethod(PUT);
                     corsConfiguration.addAllowedMethod(DELETE);
