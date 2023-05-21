@@ -48,7 +48,7 @@ public class AuthController {
         String jwtToken = authService.login(authLogin);
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add(JwtTokenConstant.JWT_ACCESS_TOKEN, jwtToken);
+        headers.add(JwtTokenConstant.AUTHORIZATION_HEADER, jwtToken);
 
         return headers;
     }
