@@ -2,7 +2,7 @@ package com.beecoders.ras.model.mapper;
 
 import com.beecoders.ras.model.entity.Dish;
 import com.beecoders.ras.model.entity.Specific;
-import com.beecoders.ras.model.response.DishResponse;
+import com.beecoders.ras.model.response.dish.DishResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Component;
