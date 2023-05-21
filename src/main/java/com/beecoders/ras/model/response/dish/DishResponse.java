@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.response;
+package com.beecoders.ras.model.response.dish;
 
 
 import com.beecoders.ras.model.entity.Category;
