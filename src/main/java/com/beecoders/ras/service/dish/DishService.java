@@ -30,6 +30,10 @@ public class DishService {
         return dishMapper.toDishInformations(dishRepository.findAll());
     }
 
+    public List<DishInfo> retrieveDishMenuByCategory(Long categoryId){
+        return dishMapper.toDishInformations(dishRepository.findAllByCategoryId(categoryId));
+    }
+
     @Transactional
     public void uploadImage(Long id, MultipartFile image) {
         Dish foundDish = dishRepository.findById(id)

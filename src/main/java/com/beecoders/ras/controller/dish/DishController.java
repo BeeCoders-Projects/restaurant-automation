@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class DishController {
     @SecurityRequirement(name = "bearerAuth")
     @Operation(
             summary = "Menu of dishes",
-            description = "As a table, I want to show menu with dishes.")
+            description = "As a table, I want to show menu with all dishes or dishes by specific category.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Retrieve menu",
                     content = { @Content(schema = @Schema(implementation = DishInfo.class),
@@ -46,8 +47,8 @@ public class DishController {
                     content = { @Content(schema = @Schema(implementation = String.class),
                             mediaType = "application/json") })})
     @GetMapping
-    public List<DishInfo> retrieveDishMenu() {
-        return dishService.retrieveDishMenu();
+    public List<DishInfo> retrieveDishMenu(@Parameter(description = "Category ID of the dish") @RequestParam(required = false) Long categoryId) {
+        return Objects.isNull(categoryId)? dishService.retrieveDishMenu():dishService.retrieveDishMenuByCategory(categoryId);
     }
 
 
