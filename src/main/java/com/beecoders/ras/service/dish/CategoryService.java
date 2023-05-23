@@ -3,6 +3,7 @@ package com.beecoders.ras.service.dish;
 import com.beecoders.ras.model.constants.dish.DishConstant;
 import com.beecoders.ras.model.entity.Category;
 import com.beecoders.ras.model.mapper.CategoryMapper;
+import com.beecoders.ras.model.request.dish.AddCategoryRequest;
 import com.beecoders.ras.model.response.dish.CategoryResponse;
 import com.beecoders.ras.repository.CategoryRepository;
 import com.beecoders.ras.service.s3.ImageStoreService;
