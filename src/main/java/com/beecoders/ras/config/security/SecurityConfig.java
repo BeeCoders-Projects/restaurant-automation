@@ -38,7 +38,7 @@ public class SecurityConfig {
                     corsConfiguration.addExposedHeader("Location");
                     corsConfiguration.addExposedHeader(AUTHORIZATION_HEADER);
                     corsConfiguration.addAllowedMethod(PATCH);
-                    corsConfiguration.addAllowedMethod(POST);
+                    corsConfiguration.addAllowedMethod(OPTIONS);
                     corsConfiguration.addAllowedMethod(PUT);
                     corsConfiguration.addAllowedMethod(DELETE);
                     return corsConfiguration;
