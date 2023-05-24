@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "dishes")
@@ -55,6 +56,6 @@ public class Dish {
             joinColumns = @JoinColumn(name = "fk_dish_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_ingredient_id")
     )
-    private Set<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
 }
