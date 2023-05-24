@@ -1,9 +1,7 @@
 package com.beecoders.ras.model.response.dish;
 
 
-import com.beecoders.ras.model.entity.Category;
 import com.beecoders.ras.model.entity.Specific;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -13,9 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -32,7 +28,7 @@ public class DishDetailInfo {
     private int weight;
     @JsonIgnore
     private List<Specific> specifics;
-    private Set<IngredientInfo> ingredients;
+    private List<IngredientInfo> ingredients;
     private CategoryDetail category;
 
     @JsonProperty(value = "specifics")

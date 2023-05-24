@@ -31,7 +31,7 @@ public class DishDetailInfoMapper extends AbstractConverter<Dish, DishDetailInfo
                 .weight(dish.getWeight())
                 .specifics(convertSpecifics(dish.getSpecifics()))
                 .category(categoryMapper.toCategoryDetail(dish.getCategory()))
-                .ingredients(ingredientMapper.toIngedientInfos(dish.getIngredients()))
+                .ingredients(ingredientMapper.toIngredientInfoList(dish.getIngredients()))
                 .build();
     }
 
