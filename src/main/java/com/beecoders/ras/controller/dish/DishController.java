@@ -1,5 +1,6 @@
 package com.beecoders.ras.controller.dish;
 
+import com.beecoders.ras.model.response.dish.DishDetailInfo;
 import com.beecoders.ras.model.response.dish.DishInfo;
 import com.beecoders.ras.service.dish.DishService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,11 @@ public class DishController {
     @GetMapping
     public List<DishInfo> retrieveDishMenu(@Parameter(description = "Category ID of the dish") @RequestParam(required = false) Long categoryId) {
         return Objects.isNull(categoryId)? dishService.retrieveDishMenu():dishService.retrieveDishMenuByCategory(categoryId);
+    }
+
+    @GetMapping("/{dishId}")
+    public DishDetailInfo retrieveDishById(@PathVariable Long dishId) {
+        return dishService.retrieveDishById(dishId);
     }
 
 
