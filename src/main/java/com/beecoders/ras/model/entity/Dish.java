@@ -46,6 +46,9 @@ public class Dish {
     @Column
     private String specifics;
 
+    @Column(nullable = false, name = "is_special")
+    private boolean isSpecial;
+
     @ManyToOne
     @JoinColumn(name = "fk_category_id")
     private Category category;
