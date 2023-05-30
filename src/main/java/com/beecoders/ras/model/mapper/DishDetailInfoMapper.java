@@ -49,7 +49,7 @@ public class DishDetailInfoMapper extends AbstractConverter<Dish, DishDetailInfo
     }
 
     private Specific getSpecificByName(String name) {
-        return Arrays.stream(Specific.values()).filter(sp -> sp.getSpecificName().equals(name))
+        return Arrays.stream(Specific.values()).filter(sp -> sp.getSpecificNameEn().equals(name))
                 .findFirst()
                 .orElse(null);
     }
