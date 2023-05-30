@@ -30,6 +30,7 @@ public class DishDetailInfo {
     private List<Specific> specifics;
     private List<IngredientInfo> ingredients;
     private CategoryDetail category;
+    private boolean isSpecial;
 
     @JsonProperty(value = "specifics")
     public List<String> getStringSpecifics(){
