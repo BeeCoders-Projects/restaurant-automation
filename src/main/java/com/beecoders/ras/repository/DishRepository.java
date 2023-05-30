@@ -13,4 +13,6 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
     List<Dish> findAllByCategory(String category);
     @Query("select d from Dish d where d.isSpecial = true")
     List<Dish> findAllSpecialDishes();
+    @Query("select case when count(d) > 0 then true else false end from Dish d where d.isSpecial = true")
+    boolean hasSpecialDishes();
 }

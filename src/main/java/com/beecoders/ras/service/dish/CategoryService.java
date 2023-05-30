@@ -5,7 +5,9 @@ import com.beecoders.ras.model.entity.Category;
 import com.beecoders.ras.model.mapper.CategoryMapper;
 import com.beecoders.ras.model.request.dish.AddCategoryRequest;
 import com.beecoders.ras.model.response.dish.CategoryResponse;
+import com.beecoders.ras.model.response.dish.CategoryWithMetaData;
 import com.beecoders.ras.repository.CategoryRepository;
+import com.beecoders.ras.repository.DishRepository;
 import com.beecoders.ras.service.s3.ImageStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +25,13 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final ImageStoreService imageStoreService;
+    private final DishRepository dishRepository;
 
-    public List<CategoryResponse> getAllCategories(){
-        return categoryRepository.findAll()
+    public CategoryWithMetaData getAllCategories(){
+        List<CategoryResponse> categories = categoryRepository.findAll()
                 .stream().map(categoryMapper::toCategoryResponse).toList();
+        boolean hasSpecialDishes = dishRepository.hasSpecialDishes();
+        return new CategoryWithMetaData(categories, hasSpecialDishes);
     }
 
     @Transactional
