@@ -1,9 +1,11 @@
 package com.beecoders.ras.service.dish;
 
 import com.beecoders.ras.exception.dish.DishNotFoundException;
+import com.beecoders.ras.model.constants.dish.CategoryConstant;
 import com.beecoders.ras.model.entity.Dish;
 import com.beecoders.ras.model.mapper.DishDetailInfoMapper;
 import com.beecoders.ras.model.mapper.DishMapper;
+import com.beecoders.ras.model.request.dish.ChangeSpecialDish;
 import com.beecoders.ras.model.response.dish.DishDetailInfo;
 import com.beecoders.ras.model.response.dish.DishInfo;
 import com.beecoders.ras.repository.DishRepository;
@@ -17,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.beecoders.ras.model.constants.dish.CategoryConstant.ALL;
+import static com.beecoders.ras.model.constants.dish.CategoryConstant.SPECIAL;
 import static com.beecoders.ras.model.constants.dish.DishConstant.DISH_FOLDER;
 import static com.beecoders.ras.model.constants.dish.DishConstant.NOT_FOUND_DISH_ERROR_MESSAGE;
 
@@ -30,12 +34,13 @@ public class DishService {
     private final ImageStoreService imageStoreService;
     private final ModelMapper mapper;
 
-    public List<DishInfo> retrieveDishMenu() {
-        return dishMapper.toDishInformations(dishRepository.findAll());
-    }
-
-    public List<DishInfo> retrieveDishMenuByCategory(Long categoryId){
-        return dishMapper.toDishInformations(dishRepository.findAllByCategoryId(categoryId));
+    public List<DishInfo> retrieveDishMenu(String category) {
+        if (category.equals(ALL))
+            return dishMapper.toDishInformations(dishRepository.findAll());
+        else if (category.equals(SPECIAL))
+            return dishMapper.toDishInformations(dishRepository.findAllSpecialDishes());
+        else
+            return dishMapper.toDishInformations(dishRepository.findAllByCategory(category));
     }
 
     public DishDetailInfo retrieveDishById(Long id) {
@@ -49,6 +54,14 @@ public class DishService {
         String iconLink = imageStoreService.uploadImage(image, DISH_FOLDER, id);
 
         foundDish.setIcon(iconLink);
+        dishRepository.save(foundDish);
+    }
+
+    @Transactional
+    public void setSpecialDish(ChangeSpecialDish request) {
+        Dish foundDish = getDishById(request.getDishId());
+        log.info("Change special request: {}", request);
+        foundDish.setSpecial(request.isSpecial());
         dishRepository.save(foundDish);
     }
 

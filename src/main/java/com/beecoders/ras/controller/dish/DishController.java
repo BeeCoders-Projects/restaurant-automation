@@ -1,5 +1,7 @@
 package com.beecoders.ras.controller.dish;
 
+import com.beecoders.ras.model.request.auth.AuthLogin;
+import com.beecoders.ras.model.request.dish.ChangeSpecialDish;
 import com.beecoders.ras.model.response.dish.DishDetailInfo;
 import com.beecoders.ras.model.response.dish.DishInfo;
 import com.beecoders.ras.service.dish.DishService;
@@ -20,7 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Objects;
+
+import static com.beecoders.ras.model.constants.dish.CategoryConstant.ALL;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,10 +51,25 @@ public class DishController {
                     content = { @Content(schema = @Schema(implementation = String.class),
                             mediaType = "application/json") })})
     @GetMapping
-    public List<DishInfo> retrieveDishMenu(@Parameter(description = "Category ID of the dish") @RequestParam(required = false) Long categoryId) {
-        return Objects.isNull(categoryId)? dishService.retrieveDishMenu():dishService.retrieveDishMenuByCategory(categoryId);
+    public List<DishInfo> retrieveDishMenu(@Parameter(description = "Category name of the dish")
+                                               @RequestParam(required = false, defaultValue = ALL) String category) {
+        return dishService.retrieveDishMenu(category);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Detail information about the dish",
+            description = "As a table, I want to show detail information of the dish.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrieve dish",
+                    content = { @Content(schema = @Schema(implementation = DishDetailInfo.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", description = "Not found dish",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
     @GetMapping("/{dishId}")
     public DishDetailInfo retrieveDishById(@PathVariable Long dishId) {
         return dishService.retrieveDishById(dishId);
@@ -76,5 +94,26 @@ public class DishController {
                             @Parameter(required = true, description = "Image file")
                             @RequestParam MultipartFile image){
         dishService.uploadImage(id, image);
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Set dish as special",
+            description = "I want to set dish as special offer.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(schema = @Schema(implementation = ChangeSpecialDish.class),
+                            mediaType = "application/json")))
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Changed dish status"),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", description = "Not found dish",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @PutMapping("/special")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void setSpecialDish(@RequestBody ChangeSpecialDish request) {
+        dishService.setSpecialDish(request);
     }
 }

@@ -32,6 +32,7 @@ public class DishDetailInfoMapper extends AbstractConverter<Dish, DishDetailInfo
                 .specifics(convertSpecifics(dish.getSpecifics()))
                 .category(categoryMapper.toCategoryDetail(dish.getCategory()))
                 .ingredients(ingredientMapper.toIngredientInfoList(dish.getIngredients()))
+                .isSpecial(dish.isSpecial())
                 .build();
     }
 

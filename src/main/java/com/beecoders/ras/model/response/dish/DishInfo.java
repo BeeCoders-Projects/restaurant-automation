@@ -11,4 +11,5 @@ public class DishInfo {
     private String name;
     private Double price;
     private int weight;
+    private boolean isSpecial;
 }
