@@ -32,8 +32,12 @@ public class DishDetailInfo {
     private CategoryDetail category;
     private boolean isSpecial;
 
-    @JsonProperty(value = "specifics")
-    public List<String> getStringSpecifics(){
-        return specifics.stream().map(Specific::getSpecificName).toList();
+    @JsonProperty(value = "specifics_en")
+    public List<String> getStringSpecificsEn(){
+        return specifics.stream().map(Specific::getSpecificNameEn).toList();
+    }
+    @JsonProperty(value = "specifics_ua")
+    public List<String> getStringSpecificsUa(){
+        return specifics.stream().map(Specific::getSpecificNameUa).toList();
     }
 }
