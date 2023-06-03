@@ -1,9 +1,7 @@
-package com.beecoders.ras.controller.dish;
+package com.beecoders.ras.controller;
 
-import com.beecoders.ras.model.request.dish.AddCategoryRequest;
-import com.beecoders.ras.model.response.dish.CategoryResponse;
-import com.beecoders.ras.model.response.dish.IngredientInfo;
-import com.beecoders.ras.service.dish.IngredientService;
+import com.beecoders.ras.model.response.IngredientInfo;
+import com.beecoders.ras.service.IngredientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -16,10 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

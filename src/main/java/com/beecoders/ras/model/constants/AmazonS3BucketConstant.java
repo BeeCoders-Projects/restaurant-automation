@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.constants.s3;
+package com.beecoders.ras.model.constants;
 
 public class AmazonS3BucketConstant {
     /* Patterns */

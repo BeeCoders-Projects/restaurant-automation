@@ -1,4 +1,4 @@
-package com.beecoders.ras.repository.auth;
+package com.beecoders.ras.repository;
 
 import com.beecoders.ras.model.entity.auth.Credential;
 import org.springframework.data.jpa.repository.JpaRepository;

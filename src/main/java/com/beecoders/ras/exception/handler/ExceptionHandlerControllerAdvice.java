@@ -4,6 +4,8 @@ import com.beecoders.ras.exception.dish.DishNotFoundException;
 import com.beecoders.ras.exception.s3.EmptyImageException;
 import com.beecoders.ras.exception.s3.IncorrectImageFormatException;
 import com.beecoders.ras.exception.s3.UploadImageException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -37,14 +39,16 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler({EmptyImageException.class,
             IncorrectImageFormatException.class,
-            UploadImageException.class})
-    public ResponseEntity<Object> handlerImageUploadingException(RuntimeException e) {
+            UploadImageException.class,
+            IllegalArgumentException.class})
+    public ResponseEntity<Object> handlerBadRequests(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
     }
 
     @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(DishNotFoundException.class)
-    public ResponseEntity<Object> handlerNotFoundException(DishNotFoundException e) {
+    @ExceptionHandler({DishNotFoundException.class,
+            EntityNotFoundException.class})
+    public ResponseEntity<Object> handlerNotFoundException(PersistenceException e) {
         return new ResponseEntity<>(e.getMessage(), NOT_FOUND);
     }
 

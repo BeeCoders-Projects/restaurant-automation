@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.constants.dish;
+package com.beecoders.ras.model.constants;
 
 public class DishConstant {
     public static final String DISH_FOLDER = "dishes";

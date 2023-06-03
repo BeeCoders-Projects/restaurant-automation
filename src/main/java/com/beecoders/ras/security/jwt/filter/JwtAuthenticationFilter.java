@@ -1,7 +1,7 @@
 package com.beecoders.ras.security.jwt.filter;
 
 import com.beecoders.ras.model.entity.auth.Credential;
-import com.beecoders.ras.repository.auth.CredentialRepository;
+import com.beecoders.ras.repository.CredentialRepository;
 import com.beecoders.ras.security.jwt.service.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

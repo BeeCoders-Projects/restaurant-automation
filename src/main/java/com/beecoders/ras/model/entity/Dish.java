@@ -38,7 +38,7 @@ public class Dish {
     private String icon;
 
     @Column(nullable = false)
-    private int weight;
+    private Integer weight;
 
     @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;
