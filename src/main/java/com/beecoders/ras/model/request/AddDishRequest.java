@@ -15,10 +15,15 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode
 public class AddDishRequest {
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("description")
     private String description;
+    @JsonProperty("weight")
     private Integer weight;
+    @JsonProperty("price")
     private Double price;
+    @JsonProperty("specifics")
     private List<String> specifics;
     @JsonProperty("ingredientsId")
     private List<Long> ingredientsId;
