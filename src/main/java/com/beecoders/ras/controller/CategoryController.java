@@ -1,9 +1,9 @@
-package com.beecoders.ras.controller.dish;
+package com.beecoders.ras.controller;
 
-import com.beecoders.ras.model.request.dish.AddCategoryRequest;
-import com.beecoders.ras.model.response.dish.CategoryResponse;
-import com.beecoders.ras.model.response.dish.CategoryWithMetaData;
-import com.beecoders.ras.service.dish.CategoryService;
+import com.beecoders.ras.model.request.AddCategoryRequest;
+import com.beecoders.ras.model.response.CategoryResponse;
+import com.beecoders.ras.model.response.CategoryWithMetaData;
+import com.beecoders.ras.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

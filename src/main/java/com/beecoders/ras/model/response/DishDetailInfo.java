@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.response.dish;
+package com.beecoders.ras.model.response;
 
 
 import com.beecoders.ras.model.entity.Specific;
@@ -25,7 +25,7 @@ public class DishDetailInfo {
     private String description;
     private Double price;
     private String icon;
-    private int weight;
+    private Integer weight;
     @JsonIgnore
     private List<Specific> specifics;
     private List<IngredientInfo> ingredients;

@@ -1,10 +1,10 @@
-package com.beecoders.ras.controller.dish;
+package com.beecoders.ras.controller;
 
-import com.beecoders.ras.model.request.auth.AuthLogin;
-import com.beecoders.ras.model.request.dish.ChangeSpecialDish;
-import com.beecoders.ras.model.response.dish.DishDetailInfo;
-import com.beecoders.ras.model.response.dish.DishInfo;
-import com.beecoders.ras.service.dish.DishService;
+import com.beecoders.ras.model.request.AddDishRequest;
+import com.beecoders.ras.model.request.ChangeSpecialDish;
+import com.beecoders.ras.model.response.DishDetailInfo;
+import com.beecoders.ras.model.response.DishInfo;
+import com.beecoders.ras.service.DishService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -18,12 +18,13 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.beecoders.ras.model.constants.dish.CategoryConstant.ALL;
+import static com.beecoders.ras.model.constants.CategoryConstant.ALL;
 
 @RestController
 @RequiredArgsConstructor
@@ -116,4 +117,24 @@ public class DishController {
     public void setSpecialDish(@RequestBody ChangeSpecialDish request) {
         dishService.setSpecialDish(request);
     }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Creating a dishes",
+            description = "I want to create dishes.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Dishes were created successfully"),
+            @ApiResponse(responseCode = "400", description = "Incorrect data or images",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @PostMapping(value = "/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void save(@RequestPart List<AddDishRequest> dishRequests,
+                     @RequestPart MultipartFile[] images){
+        dishService.saveAll(dishRequests, images);
+    }
+
 }

@@ -1,8 +1,8 @@
 package com.beecoders.ras.controller.auth;
 
-import com.beecoders.ras.model.request.auth.AuthLogin;
+import com.beecoders.ras.model.request.AuthLogin;
 import com.beecoders.ras.security.jwt.constant.JwtTokenConstant;
-import com.beecoders.ras.service.auth.AuthService;
+import com.beecoders.ras.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;

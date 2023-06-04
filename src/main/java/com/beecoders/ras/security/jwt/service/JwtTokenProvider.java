@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.List;
 
 
-import static com.beecoders.ras.model.constants.auth.AuthConstant.TABLE_ROLE;
+import static com.beecoders.ras.model.constants.AuthConstant.TABLE_ROLE;
 import static com.beecoders.ras.security.jwt.constant.JwtTokenConstant.*;
 
 @Component

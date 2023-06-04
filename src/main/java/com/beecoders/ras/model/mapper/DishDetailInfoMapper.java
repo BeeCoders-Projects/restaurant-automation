@@ -2,7 +2,7 @@ package com.beecoders.ras.model.mapper;
 
 import com.beecoders.ras.model.entity.Dish;
 import com.beecoders.ras.model.entity.Specific;
-import com.beecoders.ras.model.response.dish.DishDetailInfo;
+import com.beecoders.ras.model.response.DishDetailInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

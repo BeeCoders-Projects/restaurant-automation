@@ -1,6 +1,8 @@
 package com.beecoders.ras.exception.dish;
 
-public class DishNotFoundException extends RuntimeException {
+import jakarta.persistence.PersistenceException;
+
+public class DishNotFoundException extends PersistenceException {
     public DishNotFoundException(String message) {
         super(message);
     }

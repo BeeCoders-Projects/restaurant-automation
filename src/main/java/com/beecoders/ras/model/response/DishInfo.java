@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.response.dish;
+package com.beecoders.ras.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,6 @@ public class DishInfo {
     private String icon;
     private String name;
     private Double price;
-    private int weight;
+    private Integer weight;
     private boolean isSpecial;
 }

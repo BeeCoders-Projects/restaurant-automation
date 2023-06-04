@@ -1,4 +1,4 @@
-package com.beecoders.ras.model.request.dish;
+package com.beecoders.ras.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

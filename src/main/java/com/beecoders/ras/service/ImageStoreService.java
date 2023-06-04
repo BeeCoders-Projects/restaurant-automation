@@ -1,4 +1,4 @@
-package com.beecoders.ras.service.s3;
+package com.beecoders.ras.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-import static com.beecoders.ras.model.constants.s3.AmazonS3BucketConstant.*;
+import static com.beecoders.ras.model.constants.AmazonS3BucketConstant.*;
 import static org.apache.http.entity.ContentType.IMAGE_JPEG;
 import static org.apache.http.entity.ContentType.IMAGE_PNG;
 

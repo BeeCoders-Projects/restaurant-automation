@@ -1,14 +1,13 @@
-package com.beecoders.ras.service.dish;
+package com.beecoders.ras.service;
 
-import com.beecoders.ras.model.constants.dish.DishConstant;
+import com.beecoders.ras.model.constants.DishConstant;
 import com.beecoders.ras.model.entity.Category;
 import com.beecoders.ras.model.mapper.CategoryMapper;
-import com.beecoders.ras.model.request.dish.AddCategoryRequest;
-import com.beecoders.ras.model.response.dish.CategoryResponse;
-import com.beecoders.ras.model.response.dish.CategoryWithMetaData;
+import com.beecoders.ras.model.request.AddCategoryRequest;
+import com.beecoders.ras.model.response.CategoryResponse;
+import com.beecoders.ras.model.response.CategoryWithMetaData;
 import com.beecoders.ras.repository.CategoryRepository;
 import com.beecoders.ras.repository.DishRepository;
-import com.beecoders.ras.service.s3.ImageStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
