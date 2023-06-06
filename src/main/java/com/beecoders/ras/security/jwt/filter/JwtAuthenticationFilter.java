@@ -1,7 +1,7 @@
 package com.beecoders.ras.security.jwt.filter;
 
-import com.beecoders.ras.model.entity.auth.Credential;
-import com.beecoders.ras.repository.CredentialRepository;
+import com.beecoders.ras.model.entity.auth.AuthorizedAccount;
+import com.beecoders.ras.repository.AuthorizedAccountRepository;
 import com.beecoders.ras.security.jwt.service.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +24,7 @@ import static com.beecoders.ras.security.jwt.constant.JwtTokenConstant.TOKEN_HEA
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
-    private final CredentialRepository credentialsRepository;
+    private final AuthorizedAccountRepository authorizedAccountRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,9 +40,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenProvider.isTokenValid(username, jwtToken) &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                Optional<Credential> credentials = credentialsRepository.findByUsername(username);
+                Optional<AuthorizedAccount> authorizedAccount = authorizedAccountRepository.findByUsername(username);
 
-                if (credentials.isPresent()) {
+                if (authorizedAccount.isPresent() &&
+                        authorizedAccount.get().getJwtToken().equals(jwtToken)) {
                     GrantedAuthority authority = jwtTokenProvider.getAuthority(jwtToken);
                     Authentication authentication = jwtTokenProvider.getAuthentication(username, authority, request);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
