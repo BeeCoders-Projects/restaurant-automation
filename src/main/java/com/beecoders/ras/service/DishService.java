@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,12 +47,15 @@ public class DishService {
     private final ModelMapper mapper;
 
     public List<DishInfo> retrieveDishMenu(String category) {
+        List<Dish> dishes;
         if (category.equals(ALL))
-            return dishMapper.toDishInformations(dishRepository.findAll());
+            dishes = dishRepository.findAll();
         else if (category.equals(SPECIAL))
-            return dishMapper.toDishInformations(dishRepository.findAllSpecialDishes());
+            dishes = dishRepository.findAllSpecialDishes();
         else
-            return dishMapper.toDishInformations(dishRepository.findAllByCategory(category));
+            dishes = dishRepository.findAllByCategory(category);
+
+        return dishMapper.toDishInformations(dishes.stream().sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())).toList());
     }
 
     public DishDetailInfo retrieveDishById(Long id) {
