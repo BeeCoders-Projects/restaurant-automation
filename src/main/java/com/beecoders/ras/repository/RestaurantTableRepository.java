@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface RestaurantTableRepository extends JpaRepository<RestaurantTable, Long> {
     Optional<RestaurantTable> findByCredential(Credential credential);
+    Optional<RestaurantTable> findByName(String name);
 }
