@@ -8,12 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
 
 @Table(name = "restaurant_tables")
 @Entity
@@ -33,4 +36,10 @@ public class RestaurantTable {
     @JoinColumn(name = "fk_credential_id", referencedColumnName = "id")
     private Credential credential;
 
+    @Column(name = "last_update", nullable = false, columnDefinition = "timestamp default current_timestamp")
+    private Timestamp lastUpdate;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_status_id")
+    private TableStatus status;
 }
