@@ -13,11 +13,12 @@ import lombok.*;
 @Builder
 public class OrderDish {
     @Id
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "fk_order_id")
     private Order order;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "fk_dish_id")
     private Dish dish;
