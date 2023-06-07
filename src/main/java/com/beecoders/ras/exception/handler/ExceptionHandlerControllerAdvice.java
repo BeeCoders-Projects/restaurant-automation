@@ -1,14 +1,18 @@
 package com.beecoders.ras.exception.handler;
 
 import com.beecoders.ras.exception.dish.DishNotFoundException;
+import com.beecoders.ras.exception.restaurant_table.RestaurantTableNotFoundException;
+import com.beecoders.ras.exception.restaurant_table.TableStatusNotFoundException;
 import com.beecoders.ras.exception.s3.EmptyImageException;
 import com.beecoders.ras.exception.s3.IncorrectImageFormatException;
 import com.beecoders.ras.exception.s3.UploadImageException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,8 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHandler {
@@ -47,9 +50,17 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler({DishNotFoundException.class,
-            EntityNotFoundException.class})
-    public ResponseEntity<Object> handlerNotFoundException(PersistenceException e) {
+            EntityNotFoundException.class,
+            TableStatusNotFoundException.class,
+            RestaurantTableNotFoundException.class})
+    public ResponseEntity<Object> handlerNotFoundException(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), NOT_FOUND);
+    }
+
+    @ResponseStatus(FORBIDDEN)
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<Object> handlerAccessDeniedException(RuntimeException e) {
+        return new ResponseEntity<>(e.getMessage(), FORBIDDEN);
     }
 
 }
