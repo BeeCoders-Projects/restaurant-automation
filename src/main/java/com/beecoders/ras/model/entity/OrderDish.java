@@ -13,6 +13,7 @@ import lombok.*;
 @Builder
 public class OrderDish {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
