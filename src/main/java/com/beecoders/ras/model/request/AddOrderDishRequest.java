@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode
 public class AddOrderDishRequest {
-    @JsonProperty("dish_Id")
+    @JsonProperty("dish_id")
     private Long dishId;
 
     private Integer count;
