@@ -2,6 +2,7 @@ package com.beecoders.ras.controller;
 
 import com.beecoders.ras.model.request.AddOrderRequest;
 import com.beecoders.ras.model.response.DishInfo;
+import com.beecoders.ras.model.response.OrderDetailInfo;
 import com.beecoders.ras.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -17,12 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -46,7 +42,7 @@ public class OrderController {
             summary = "Order creation",
             description = "As a table, I want to create an order consisting of selected dishes")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Create an order",
+            @ApiResponse(responseCode = "201", description = "Create an order",
                     content = { @Content(schema = @Schema(implementation = Long.class),
                             mediaType = "application/json") }),
             @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
@@ -59,6 +55,25 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     public Long save(@RequestBody AddOrderRequest addOrderRequest, Principal principal){
        return orderService.save(addOrderRequest, principal.getName());
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Get order detail info",
+            description = "As a table, I want to get order detail info by id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Get order detail info",
+                    content = { @Content(schema = @Schema(implementation = Long.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", description = "Order not found",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @GetMapping("/{id}")
+    public OrderDetailInfo getOrderDetailInfo(@PathVariable Long id){
+        return orderService.getOrderDetailInfoById(id);
     }
 
 }
