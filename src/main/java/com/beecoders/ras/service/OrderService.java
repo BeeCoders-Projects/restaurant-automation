@@ -7,6 +7,8 @@ import com.beecoders.ras.model.entity.OrderDish;
 import com.beecoders.ras.model.entity.RestaurantTable;
 import com.beecoders.ras.model.request.AddOrderDishRequest;
 import com.beecoders.ras.model.request.AddOrderRequest;
+import com.beecoders.ras.model.response.OrderDetailInfo;
+import com.beecoders.ras.model.response.OrderDishInfo;
 import com.beecoders.ras.repository.CredentialRepository;
 import com.beecoders.ras.repository.DishRepository;
 import com.beecoders.ras.repository.OrderDishRepository;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,9 @@ public class OrderService {
                     .build());
         }
         List<AddOrderDishRequest> orderDishRequests = addOrderRequest.getDishes();
+        if (orderDishRequests.stream().map(AddOrderDishRequest::getDishId)
+                .collect(Collectors.toSet()).size() != orderDishRequests.size())
+            throw new IllegalArgumentException("Some dishes have duplicate in the request");
         List<Dish> dishes = dishRepository.findAllById(orderDishRequests.stream().map(AddOrderDishRequest::getDishId).toList());
         List<OrderDish> orderDishes = new ArrayList<>();
         if(dishes.size()!= orderDishRequests.size()) throw new IllegalArgumentException("One or more of the dishes in the order does not exist");
@@ -64,6 +70,19 @@ public class OrderService {
         order.setTotalPrice(order.getTotalPrice()+orderDishes.stream().map(OrderDish::getPrice).reduce(Double::sum).orElse(0D));
 
         return order.getId();
+    }
+
+    public OrderDetailInfo getOrderDetailInfoById(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Order with id (%s) not found", id)));
+
+        List<OrderDishInfo> dishes = orderDishRepository.retrieveOrderedDishesByOrderId(id);
+
+        return OrderDetailInfo.builder()
+                .orderId(id)
+                .dishes(dishes)
+                .totalPrice(order.getTotalPrice())
+                .build();
     }
 
 }
