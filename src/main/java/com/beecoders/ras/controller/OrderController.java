@@ -1,6 +1,7 @@
 package com.beecoders.ras.controller;
 
 import com.beecoders.ras.model.request.AddOrderRequest;
+import com.beecoders.ras.model.request.PayOrder;
 import com.beecoders.ras.model.response.DishInfo;
 import com.beecoders.ras.model.response.OrderDetailInfo;
 import com.beecoders.ras.service.OrderService;
@@ -63,7 +64,7 @@ public class OrderController {
             description = "As a table, I want to get order detail info by id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Get order detail info",
-                    content = { @Content(schema = @Schema(implementation = Long.class),
+                    content = { @Content(schema = @Schema(implementation = OrderDetailInfo.class),
                             mediaType = "application/json") }),
             @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
                     content = { @Content(schema = @Schema(implementation = String.class),
@@ -74,6 +75,28 @@ public class OrderController {
     @GetMapping("/{id}")
     public OrderDetailInfo getOrderDetailInfo(@PathVariable Long id){
         return orderService.getOrderDetailInfoById(id);
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Pay order",
+            description = "As a table, I want to pay order")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Paid order with successful message",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", description = "Order not found",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "409", description = "Illegal payment",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @PostMapping("/payment")
+    public String payOrder(@Valid @RequestBody PayOrder request){
+        return orderService.payOrder(request);
     }
 
 }
