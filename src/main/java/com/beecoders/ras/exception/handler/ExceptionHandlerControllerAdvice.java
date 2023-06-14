@@ -1,6 +1,7 @@
 package com.beecoders.ras.exception.handler;
 
 import com.beecoders.ras.exception.dish.DishNotFoundException;
+import com.beecoders.ras.exception.order.IllegalPaymentException;
 import com.beecoders.ras.exception.restaurant_table.RestaurantTableNotFoundException;
 import com.beecoders.ras.exception.restaurant_table.TableStatusNotFoundException;
 import com.beecoders.ras.exception.s3.EmptyImageException;
@@ -35,7 +36,10 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
                                                                   WebRequest request) {
         Map<String, String> errors = new HashMap<>();
         e.getFieldErrors()
-                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+                .forEach(error -> {
+                    int size = error.getField().split("\\.").length;
+                    errors.put(error.getField().split("\\.")[size-1], error.getDefaultMessage());
+                } );
         return new ResponseEntity<>(errors, status);
     }
 
@@ -61,6 +65,12 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handlerAccessDeniedException(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), FORBIDDEN);
+    }
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(IllegalPaymentException.class)
+    public ResponseEntity<Object> handlerIllegalPaymentException(RuntimeException e) {
+        return new ResponseEntity<>(e.getMessage(), CONFLICT);
     }
 
 }
