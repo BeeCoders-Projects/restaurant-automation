@@ -1,28 +1,28 @@
 package com.beecoders.ras.service;
 
+import com.beecoders.ras.exception.order.IllegalPaymentException;
 import com.beecoders.ras.exception.restaurant_table.RestaurantTableNotFoundException;
-import com.beecoders.ras.model.entity.Dish;
-import com.beecoders.ras.model.entity.Order;
-import com.beecoders.ras.model.entity.OrderDish;
-import com.beecoders.ras.model.entity.RestaurantTable;
+import com.beecoders.ras.model.constants.PaymentType;
+import com.beecoders.ras.model.entity.*;
 import com.beecoders.ras.model.request.AddOrderDishRequest;
 import com.beecoders.ras.model.request.AddOrderRequest;
+import com.beecoders.ras.model.request.PayOrder;
 import com.beecoders.ras.model.response.OrderDetailInfo;
 import com.beecoders.ras.model.response.OrderDishInfo;
-import com.beecoders.ras.repository.CredentialRepository;
-import com.beecoders.ras.repository.DishRepository;
-import com.beecoders.ras.repository.OrderDishRepository;
-import com.beecoders.ras.repository.OrderRepository;
-import com.beecoders.ras.repository.RestaurantTableRepository;
+import com.beecoders.ras.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.beecoders.ras.model.constants.PaymentType.DEBIT;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +34,7 @@ public class OrderService {
     private final OrderDishRepository orderDishRepository;
     private final RestaurantTableRepository tableRepository;
     private final CredentialRepository credentialRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
 
     @Transactional
     public Long save(AddOrderRequest addOrderRequest, String table){
@@ -83,6 +84,26 @@ public class OrderService {
                 .dishes(dishes)
                 .totalPrice(order.getTotalPrice())
                 .build();
+    }
+
+    @Transactional
+    public String payOrder(PayOrder payOrder) {
+        if (payOrder.getCardInfo() == null && payOrder.getPaymentType().equals(DEBIT.name()))
+            throw new IllegalPaymentException("Card should be present for DEBIT type payment");
+
+        Long orderId = payOrder.getOrderId();
+        PaymentMethod paymentMethod = paymentMethodRepository.findByName(payOrder.getPaymentType())
+                .orElseThrow();
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Order with id (%s) not found", orderId)));
+
+        if (order.getFinishedAt() != null)
+            throw new IllegalPaymentException(String.format("Order with id (%s) already paid", orderId));
+
+        order.setPaymentMethod(paymentMethod);
+        order.setFinishedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+        return PaymentType.valueOf(payOrder.getPaymentType()).getSuccessfulMessage();
     }
 
 }
