@@ -84,8 +84,11 @@ public class OrderService {
                 .reduce(Double::sum)
                 .orElse(0D));
 
-        if (!Objects.isNull(order.getPromocode()))
+        if (!Objects.isNull(order.getPromocode())) {
             calculateOrderPrice(order);
+        } else {
+            order.setCurrentSum(order.getTotalPrice());
+        }
 
         return order.getId();
     }
@@ -98,6 +101,8 @@ public class OrderService {
                 .orderId(id)
                 .dishes(dishes)
                 .totalPrice(order.getTotalPrice())
+                .currentSum(order.getCurrentSum())
+                .discountSum(order.getDiscountSum())
                 .build();
     }
 
