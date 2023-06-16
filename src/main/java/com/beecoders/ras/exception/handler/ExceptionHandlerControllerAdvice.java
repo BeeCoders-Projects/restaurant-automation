@@ -2,15 +2,14 @@ package com.beecoders.ras.exception.handler;
 
 import com.beecoders.ras.exception.dish.DishNotFoundException;
 import com.beecoders.ras.exception.order.IllegalPaymentException;
+import com.beecoders.ras.exception.order.IllegalUsingPromocodeException;
 import com.beecoders.ras.exception.restaurant_table.RestaurantTableNotFoundException;
 import com.beecoders.ras.exception.restaurant_table.TableStatusNotFoundException;
 import com.beecoders.ras.exception.s3.EmptyImageException;
 import com.beecoders.ras.exception.s3.IncorrectImageFormatException;
 import com.beecoders.ras.exception.s3.UploadImageException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -47,7 +46,8 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
     @ExceptionHandler({EmptyImageException.class,
             IncorrectImageFormatException.class,
             UploadImageException.class,
-            IllegalArgumentException.class})
+            IllegalArgumentException.class,
+            IllegalUsingPromocodeException.class})
     public ResponseEntity<Object> handlerBadRequests(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
     }

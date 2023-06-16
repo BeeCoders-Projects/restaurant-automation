@@ -1,8 +1,8 @@
 package com.beecoders.ras.controller;
 
 import com.beecoders.ras.model.request.AddOrderRequest;
+import com.beecoders.ras.model.request.AddPromocode;
 import com.beecoders.ras.model.request.PayOrder;
-import com.beecoders.ras.model.response.DishInfo;
 import com.beecoders.ras.model.response.OrderDetailInfo;
 import com.beecoders.ras.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -99,4 +98,25 @@ public class OrderController {
         return orderService.payOrder(request);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Add promocode to order",
+            description = "As a table, I want to add promocode with discount to order")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Add promocode to order successfully",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Incorrect data",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", description = "Order or Promocode not found",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @PostMapping("/promocode")
+    public void addPromocodeToOrder(@Valid @RequestBody AddPromocode request){
+        orderService.addPromocode(request);
+    }
 }
