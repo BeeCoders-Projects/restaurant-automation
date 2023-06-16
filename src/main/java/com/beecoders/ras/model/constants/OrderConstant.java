@@ -9,6 +9,6 @@ public class OrderConstant {
     public static final String PROMOCODE_NOT_FOUND_ERROR_MESSAGE = "Promocode [%s] not found";
     public static final String SOME_DISHES_NOT_FOUND_ERROR_MESSAGE = "One or more of the dishes in the order does not exist";
     public static final String DUBLICATE_DISHES_REQUEST_ERROR_MESSAGE = "Some dishes have duplicate in the request";
-    public static final String EXPIRED_PROMOCODE_ERROR_MESSAGE = "Promocode is expired";
+    public static final String INVALID_PROMOCODE_ERROR_MESSAGE = "Invalid promocode for using";
     public static final String ALREADY_USED_PROMOCODE_ERROR_MESSAGE = "Order already used promocode";
 }

@@ -123,8 +123,9 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format(PROMOCODE_NOT_FOUND_ERROR_MESSAGE,
                         request.getPromocode())));
 
-        if (promocode.getToDate().isBefore(LocalDate.now()))
-            throw new IllegalUsingPromocodeException(EXPIRED_PROMOCODE_ERROR_MESSAGE);
+        if (promocode.getFromDate().isAfter(LocalDate.now()) ||
+                promocode.getToDate().isBefore(LocalDate.now()))
+            throw new IllegalUsingPromocodeException(INVALID_PROMOCODE_ERROR_MESSAGE);
 
         order.setPromocode(promocode);
         calculateOrderPrice(order);
