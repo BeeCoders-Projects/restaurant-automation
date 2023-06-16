@@ -54,6 +54,8 @@ public class OrderService {
             order = orderRepository.save(Order.builder()
                     .createdAt(restaurantTable.getLastUpdate())
                     .totalPrice(0D)
+                    .currentSum(0D)
+                    .discountSum(0D)
                     .table(restaurantTable)
                     .build());
         }
@@ -77,7 +79,13 @@ public class OrderService {
             orderDishes.add(orderDish);
         }
         orderDishRepository.saveAll(orderDishes);
-        order.setTotalPrice(order.getTotalPrice()+orderDishes.stream().map(OrderDish::getPrice).reduce(Double::sum).orElse(0D));
+        order.setTotalPrice(order.getTotalPrice()+orderDishes.stream()
+                .map(OrderDish::getPrice)
+                .reduce(Double::sum)
+                .orElse(0D));
+
+        if (!Objects.isNull(order.getPromocode()))
+            calculateOrderPrice(order);
 
         return order.getId();
     }
