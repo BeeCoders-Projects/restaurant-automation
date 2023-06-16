@@ -13,4 +13,6 @@ public class OrderDetailInfo {
     private Long orderId;
     private List<OrderDishInfo> dishes;
     private Double totalPrice;
+    private Double discountSum;
+    private Double currentSum;
 }

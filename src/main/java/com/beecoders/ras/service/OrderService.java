@@ -86,6 +86,8 @@ public class OrderService {
 
         if (!Objects.isNull(order.getPromocode()))
             calculateOrderPrice(order);
+        else
+            order.setCurrentSum(order.getTotalPrice());
 
         return order.getId();
     }
@@ -98,6 +100,8 @@ public class OrderService {
                 .orderId(id)
                 .dishes(dishes)
                 .totalPrice(order.getTotalPrice())
+                .currentSum(order.getCurrentSum())
+                .discountSum(order.getDiscountSum())
                 .build();
     }
 
