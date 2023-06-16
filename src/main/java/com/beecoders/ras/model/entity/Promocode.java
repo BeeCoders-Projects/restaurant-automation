@@ -21,7 +21,7 @@ public class Promocode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
 
     @Column(name = "from_date", nullable = false)
