@@ -27,6 +27,12 @@ public class Order {
     @Column(name = "total_price", nullable = false, columnDefinition = "float(10,2)")
     private Double totalPrice;
 
+    @Column(name = "discount_sum", nullable = false, columnDefinition = "float(10,2) default 0")
+    private Double discountSum;
+
+    @Column(name = "current_sum", nullable = false, columnDefinition = "float(10,2) default 0")
+    private Double currentSum;
+
     @ManyToOne
     @JoinColumn(name = "fk_table_id", referencedColumnName = "id")
     private RestaurantTable table;
@@ -34,5 +40,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "fk_payment_method", referencedColumnName = "id")
     private PaymentMethod paymentMethod;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_promocode_id", referencedColumnName = "id")
+    private Promocode promocode;
 
 }
