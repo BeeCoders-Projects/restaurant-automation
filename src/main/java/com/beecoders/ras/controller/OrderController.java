@@ -4,6 +4,7 @@ import com.beecoders.ras.model.request.AddOrderRequest;
 import com.beecoders.ras.model.request.AddPromocode;
 import com.beecoders.ras.model.request.PayOrder;
 import com.beecoders.ras.model.response.OrderDetailInfo;
+import com.beecoders.ras.model.response.PromocodeStatistic;
 import com.beecoders.ras.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -17,10 +18,13 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -118,5 +122,27 @@ public class OrderController {
     @PostMapping("/promocode")
     public void addPromocodeToOrder(@Valid @RequestBody AddPromocode request){
         orderService.addPromocode(request);
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Get statistic of promocodes",
+            description = "As a table, I want to get statistic of promocodes")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Get statistic of promocodes successfully",
+                    content = { @Content(schema = @Schema(implementation = PromocodeStatistic.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Incorrect data",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Log in to get access to the page",
+                    content = { @Content(schema = @Schema(implementation = String.class),
+                            mediaType = "application/json") })})
+    @GetMapping ("/promocode/statistic")
+    public List<PromocodeStatistic> getPromocodeStatistic(@RequestParam(required = false)
+                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from,
+                                                          @RequestParam(required = false)
+                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to){
+        return orderService.getPromocodeStatistic(from, to);
     }
 }
