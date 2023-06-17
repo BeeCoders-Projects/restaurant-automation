@@ -162,12 +162,7 @@ public class OrderService {
         Timestamp fromTime = Timestamp.valueOf(LocalDateTime.of(from, LocalTime.MIDNIGHT));
         Timestamp toTime = Timestamp.valueOf(LocalDateTime.of(to, LocalTime.MIDNIGHT));
 
-        log.info("From: {}", fromTime);
-        log.info("To: {}", toTime);
-
-        return promocodeRepository.retrieveStatisticByDateRange(fromTime,
-                        toTime,
-                        limit)
+        return promocodeRepository.retrieveStatisticByDateRange(fromTime, toTime, from, to, limit)
                 .getContent();
     }
 

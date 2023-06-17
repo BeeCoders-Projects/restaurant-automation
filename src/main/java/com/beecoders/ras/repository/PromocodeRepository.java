@@ -23,9 +23,13 @@ public interface PromocodeRepository extends JpaRepository<Promocode, Long> {
             "LEFT JOIN (" +
             "   SELECT o.promocode.holderName AS holderName, COUNT(o.id) AS orderCount " +
             "   FROM Order o " +
-            "   WHERE o.createdAt BETWEEN :from AND :to " +
+            "   WHERE o.promocode.fromDate <= :toDate and o.promocode.toDate >= :fromDate " +
             "   GROUP BY o.promocode.holderName" +
-            ") AS subquery ON p.holderName = subquery.holderName group by p.holderName " +
+            ") AS subquery ON p.holderName = subquery.holderName " +
+            "where p.fromDate <= :toDate and p.toDate >= :fromDate " +
+            "group by p.holderName " +
             "ORDER BY COALESCE(subquery.orderCount, 0L) DESC")
-    Page<PromocodeStatistic> retrieveStatisticByDateRange(Timestamp from, Timestamp to, PageRequest pageRequest);
+    Page<PromocodeStatistic> retrieveStatisticByDateRange(Timestamp from, Timestamp to,
+                                                          LocalDate fromDate, LocalDate toDate,
+                                                          PageRequest pageRequest);
 }
