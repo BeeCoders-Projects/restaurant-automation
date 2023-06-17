@@ -11,16 +11,20 @@ import com.beecoders.ras.model.request.AddPromocode;
 import com.beecoders.ras.model.request.PayOrder;
 import com.beecoders.ras.model.response.OrderDetailInfo;
 import com.beecoders.ras.model.response.OrderDishInfo;
+import com.beecoders.ras.model.response.PromocodeStatistic;
 import com.beecoders.ras.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -142,6 +146,24 @@ public class OrderService {
 
         order.setPromocode(promocode);
         calculateOrderPrice(order);
+    }
+
+
+    public List<PromocodeStatistic> getPromocodeStatistic(LocalDate from, LocalDate to) {
+        if ((Objects.isNull(from))) {
+            from = LocalDate.EPOCH;
+        } if ((Objects.isNull(to))) {
+            to = LocalDate.now();
+        } if (from.isAfter(to)) {
+            throw new IllegalArgumentException("Illegal date range");
+        }
+
+        PageRequest limit = PageRequest.ofSize(10);
+        Timestamp fromTime = Timestamp.valueOf(LocalDateTime.of(from, LocalTime.MIDNIGHT));
+        Timestamp toTime = Timestamp.valueOf(LocalDateTime.of(to, LocalTime.MIDNIGHT));
+
+        return promocodeRepository.retrieveStatisticByDateRange(fromTime, toTime, from, to, limit)
+                .getContent();
     }
 
     private void calculateOrderPrice(Order order) {
