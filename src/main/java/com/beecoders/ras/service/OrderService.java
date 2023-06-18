@@ -100,6 +100,7 @@ public class OrderService {
     public OrderDetailInfo getOrderDetailInfoById(Long id) {
         Order order = findOrderById(id);
         List<OrderDishInfo> dishes = orderDishRepository.retrieveOrderedDishesByOrderId(id);
+        Byte discountPercentage = (Objects.isNull(order.getPromocode())) ? 0 : order.getPromocode().getDiscountPercent();
 
         return OrderDetailInfo.builder()
                 .orderId(id)
@@ -107,6 +108,7 @@ public class OrderService {
                 .totalPrice(order.getTotalPrice())
                 .currentSum(order.getCurrentSum())
                 .discountSum(order.getDiscountSum())
+                .discountPercentage(discountPercentage)
                 .build();
     }
 
@@ -120,11 +122,10 @@ public class OrderService {
                 .orElseThrow();
         Order order = findOrderById(orderId);
 
-        if (order.getFinishedAt() != null)
-            throw new IllegalPaymentException(String.format(ORDER_ALREADY_PAID_ERROR_MESSAGE, orderId));
-
-        order.setPaymentMethod(paymentMethod);
-        order.setFinishedAt(Timestamp.valueOf(LocalDateTime.now()));
+        if (Objects.isNull(order.getFinishedAt())) {
+            order.setPaymentMethod(paymentMethod);
+            order.setFinishedAt(Timestamp.valueOf(LocalDateTime.now()));
+        }
 
         return PaymentType.valueOf(payOrder.getPaymentType()).getSuccessfulMessage();
     }

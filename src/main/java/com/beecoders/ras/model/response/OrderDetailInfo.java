@@ -15,4 +15,5 @@ public class OrderDetailInfo {
     private Double totalPrice;
     private Double discountSum;
     private Double currentSum;
+    private Byte discountPercentage;
 }
