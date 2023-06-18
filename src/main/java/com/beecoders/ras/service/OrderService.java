@@ -122,10 +122,11 @@ public class OrderService {
                 .orElseThrow();
         Order order = findOrderById(orderId);
 
-        if (Objects.isNull(order.getFinishedAt())) {
-            order.setPaymentMethod(paymentMethod);
-            order.setFinishedAt(Timestamp.valueOf(LocalDateTime.now()));
-        }
+        if (!Objects.isNull(order.getFinishedAt()))
+            throw new IllegalPaymentException(String.format(ORDER_ALREADY_PAID_ERROR_MESSAGE, orderId));
+
+        order.setPaymentMethod(paymentMethod);
+        order.setFinishedAt(Timestamp.valueOf(LocalDateTime.now()));
 
         return PaymentType.valueOf(payOrder.getPaymentType()).getSuccessfulMessage();
     }
