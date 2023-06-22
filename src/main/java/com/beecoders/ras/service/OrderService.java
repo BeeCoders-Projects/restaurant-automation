@@ -25,9 +25,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.beecoders.ras.model.constants.OrderConstant.*;
@@ -67,7 +65,11 @@ public class OrderService {
         if (orderDishRequests.stream().map(AddOrderDishRequest::getDishId)
                 .collect(Collectors.toSet()).size() != orderDishRequests.size())
             throw new IllegalArgumentException(DUBLICATE_DISHES_REQUEST_ERROR_MESSAGE);
-        List<Dish> dishes = dishRepository.findAllById(orderDishRequests.stream().map(AddOrderDishRequest::getDishId).toList());
+
+        List<Dish> dishes = dishRepository.findAllById(orderDishRequests.stream()
+                .map(AddOrderDishRequest::getDishId).toList());
+        Collections.sort(dishes, Comparator.comparing(Dish::getId));
+        Collections.sort(orderDishRequests, Comparator.comparing(AddOrderDishRequest::getDishId));
         List<OrderDish> orderDishes = new ArrayList<>();
 
         if(dishes.size()!= orderDishRequests.size())
