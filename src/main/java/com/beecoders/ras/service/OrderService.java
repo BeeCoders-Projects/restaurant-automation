@@ -5,6 +5,7 @@ import com.beecoders.ras.exception.order.IllegalUsingPromocodeException;
 import com.beecoders.ras.exception.restaurant_table.RestaurantTableNotFoundException;
 import com.beecoders.ras.model.constants.PaymentType;
 import com.beecoders.ras.model.entity.*;
+import com.beecoders.ras.model.mapper.OrderMapper;
 import com.beecoders.ras.model.request.AddOrderDishRequest;
 import com.beecoders.ras.model.request.AddOrderRequest;
 import com.beecoders.ras.model.request.AddPromocode;
@@ -16,7 +17,6 @@ import com.beecoders.ras.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.beecoders.ras.model.constants.OrderConstant.*;
@@ -43,6 +44,7 @@ public class OrderService {
     private final CredentialRepository credentialRepository;
     private final PaymentMethodRepository paymentMethodRepository;
     private final PromocodeRepository promocodeRepository;
+    private final OrderMapper orderMapper;
 
     @Transactional
     public Long save(AddOrderRequest addOrderRequest, String table){
@@ -66,24 +68,18 @@ public class OrderService {
                 .collect(Collectors.toSet()).size() != orderDishRequests.size())
             throw new IllegalArgumentException(DUBLICATE_DISHES_REQUEST_ERROR_MESSAGE);
 
-        List<Dish> dishes = dishRepository.findAllById(orderDishRequests.stream()
-                .map(AddOrderDishRequest::getDishId).toList());
-        Collections.sort(dishes, Comparator.comparing(Dish::getId));
-        Collections.sort(orderDishRequests, Comparator.comparing(AddOrderDishRequest::getDishId));
-        List<OrderDish> orderDishes = new ArrayList<>();
+        Map<Long, Dish> dishes = dishRepository.findAllById(orderDishRequests.stream()
+                .map(AddOrderDishRequest::getDishId).toList()).stream()
+                .collect(Collectors.toMap(Dish::getId, Function.identity()));
 
-        if(dishes.size()!= orderDishRequests.size())
+        if(dishes.size() != orderDishRequests.size())
             throw new IllegalArgumentException(SOME_DISHES_NOT_FOUND_ERROR_MESSAGE);
 
-        for (int i = 0; i < orderDishRequests.size(); i++) {
-            OrderDish orderDish = OrderDish.builder()
-                    .order(order)
-                    .dish(dishes.get(i))
-                    .quantity(orderDishRequests.get(i).getCount())
-                    .price(dishes.get(i).getPrice()*orderDishRequests.get(i).getCount())
-                    .build();
-            orderDishes.add(orderDish);
-        }
+        List<OrderDish> orderDishes = orderDishRequests.stream()
+                .map(orderedDish ->
+                        orderMapper.toOrderDish(order, dishes.get(orderedDish.getDishId()), orderedDish.getCount()))
+                .toList();
+
         orderDishRepository.saveAll(orderDishes);
         order.setTotalPrice(order.getTotalPrice()+orderDishes.stream()
                 .map(OrderDish::getPrice)
@@ -156,9 +152,11 @@ public class OrderService {
     public List<PromocodeStatistic> getPromocodeStatistic(LocalDate from, LocalDate to) {
         if ((Objects.isNull(from))) {
             from = LocalDate.EPOCH;
-        } if ((Objects.isNull(to))) {
+        }
+        if ((Objects.isNull(to))) {
             to = LocalDate.now();
-        } if (from.isAfter(to)) {
+        }
+        if (from.isAfter(to)) {
             throw new IllegalArgumentException("Illegal date range");
         }
 
